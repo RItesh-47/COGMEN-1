@@ -430,7 +430,7 @@ def get_mosei_from_tbje_emotion_split(args, split_utterances):
         dev_vids,
         test_vids,
     ) = pickle.load(
-        open("/content/drive/MyDrive/mosei/tbje_mosei_" + args.emotion + ".pkl", "rb"),
+        open(args.data_dir + "/tbje_mosei_" + args.emotion + ".pkl", "rb"),
         encoding="latin1",
     )
 
@@ -619,6 +619,7 @@ if __name__ == "__main__":
         help="uses extracted pose from visual modality",
     )
     parser.add_argument("--split_utterances", type=int, default=-1)
+    parser.add_argument("--emotion", type=str, default="disgust")
     parser.add_argument("--seed", type=int, default=24, help="Random seed.")
     args = parser.parse_args()
 
