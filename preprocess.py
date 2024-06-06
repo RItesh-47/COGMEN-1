@@ -436,12 +436,10 @@ def get_mosei_from_tbje_emotion_split(args, split_utterances):
 
     train, dev, test = [], [], []
 
-    video_ids = np.array(list(video_ids.items()))
-
     def process_data(video_list, dataset_name):
         processed_data = []
         for dialogue_idx in tqdm(video_list, desc=dataset_name):
-            num_of_utterances = len(video_ids[video_ids[:, 0] == dialogue_idx][0][1])
+            num_of_utterances = len(video_ids[dialogue_idx])
             for split_i in range(num_of_utterances // split_utterances):
                 audio = [
                     np.average(video_audio[dialogue_idx][i], axis=0)
