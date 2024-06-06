@@ -417,6 +417,58 @@ def get_mosei_from_tbje_emotion(args):
 
     return train, dev, test
 
+def get_mosei_from_tbje_emotion_split(args, split_utterances):
+    (
+        video_ids,
+        video_speakers,
+        video_labels,
+        video_text,
+        video_audio,
+        video_visual,
+        video_sentence,
+        trainVids,
+        dev_vids,
+        test_vids,
+    ) = pickle.load(
+        open("./data/mosei/tbje_mosei_" + args.emotion + ".pkl", "rb"),
+        encoding="latin1",
+    )
+
+    train, dev, test = [], [], []
+
+    video_ids = np.array(list(video_ids.items()))
+
+    def process_data(video_list, dataset_name):
+        processed_data = []
+        for dialogue_idx in tqdm(video_list, desc=dataset_name):
+            num_of_utterances = len(video_ids[video_ids[:, 0] == dialogue_idx][0][1])
+            for split_i in range(num_of_utterances // split_utterances):
+                audio = [
+                    np.average(video_audio[dialogue_idx][i], axis=0)
+                    for i in range(split_i * split_utterances, (split_i + 1) * split_utterances)
+                ]
+                text = [" ".join(i) for i in video_sentence[dialogue_idx][split_i * split_utterances: (split_i + 1) * split_utterances]]
+                visual = [video_visual[dialogue_idx][i] for i in range(split_i * split_utterances, (split_i + 1) * split_utterances)]
+                
+                visual_size = np.array([len(video_visual[dialogue_idx][i]) for i in range(split_i * split_utterances, (split_i + 1) * split_utterances)])
+                if not all(visual_size == 35):
+                    breakpoint()
+
+                speakers = ["M" for _ in range(split_utterances)]
+                labels = [video_labels[dialogue_idx][i] for i in range(split_i * split_utterances, (split_i + 1) * split_utterances)]
+                
+                processed_data.append(
+                    cogmen.Sample(
+                        "diag_" + str(dialogue_idx), speakers, labels, text, audio, visual, text
+                    )
+                )
+        return processed_data
+
+    train = process_data(trainVids, "train")
+    dev = process_data(dev_vids, "dev")
+    test = process_data(test_vids, "test")
+
+    return train, dev, test
 
 def get_mosei():
 
@@ -533,7 +585,7 @@ def main(args):
         cogmen.utils.save_pkl(data, "./data/mosei/data_mosei_7class.pkl")
 
     if args.dataset == "mosei_emotion":
-        train, dev, test = get_mosei_from_tbje_emotion(args)
+        train, dev, test = get_mosei_from_tbje_emotion_split(args, args.split_utterances)
         data = {"train": train, "dev": dev, "test": test}
         cogmen.utils.save_pkl(data, "./data/mosei/data_mosei_" + args.emotion + ".pkl")
 
