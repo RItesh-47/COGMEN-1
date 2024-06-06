@@ -171,7 +171,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--wf",
         type=int,
-        default=5,
+        default=0,
         help="Future context window size. Set wp to -1 to use all the future context.",
     )
     parser.add_argument("--n_speakers", type=int, default=2, help="Number of speakers.")
