@@ -430,7 +430,7 @@ def get_mosei_from_tbje_emotion_split(args, split_utterances):
         dev_vids,
         test_vids,
     ) = pickle.load(
-        open("./data/mosei/tbje_mosei_" + args.emotion + ".pkl", "rb"),
+        open("/content/drive/MyDrive/mosei/tbje_mosei_" + args.emotion + ".pkl", "rb"),
         encoding="latin1",
     )
 
