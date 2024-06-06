@@ -585,7 +585,7 @@ def main(args):
     if args.dataset == "mosei_emotion":
         train, dev, test = get_mosei_from_tbje_emotion_split(args, args.split_utterances)
         data = {"train": train, "dev": dev, "test": test}
-        cogmen.utils.save_pkl(data, "./data/mosei/data_mosei_" + args.emotion + ".pkl")
+        cogmen.utils.save_pkl(data, args.output_dir + args.dataset + "data_mosei_" + args.emotion + ".pkl")
 
     log.info("number of train samples: {}".format(len(train)))
     log.info("number of dev samples: {}".format(len(dev)))
@@ -619,6 +619,7 @@ if __name__ == "__main__":
     parser.add_argument("--split_utterances", type=int, default=-1)
     parser.add_argument("--emotion", type=str, default="disgust")
     parser.add_argument("--seed", type=int, default=24, help="Random seed.")
+    parser.add_argument("--output_dir", type=str, default="./data")
     args = parser.parse_args()
 
     main(args)
