@@ -72,9 +72,9 @@ class COGMEN(nn.Module):
         # [batch_size, mx_len, D_g]
         node_features = self.rnn(data["text_len_tensor"], data["input_tensor"])
 
-        print(f"text_len_tensor===={data["text_len_tensor"].size()}")
-        print(f"input_tensor===={data["input_tensor"].size()}")
-        print(f"node_features ka size ===={node_features.size()}")
+        print(f'text_len_tensor===={data["text_len_tensor"].size()}')
+        print(f'input_tensor===={data["input_tensor"].size()}')
+        print(f'node_features ka size ===={node_features.size()}')
 
         features, edge_index, edge_type, edge_index_lengths = batch_graphify(
             node_features,
