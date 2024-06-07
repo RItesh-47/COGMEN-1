@@ -45,7 +45,7 @@ def main(args):
     if args.emotion:
         args.data = os.path.join(
             args.data_dir_path,
-            args.dataset,
+            # args.dataset,
             "data_" + args.dataset + "_" + args.emotion + ".pkl",
         )
     else:
