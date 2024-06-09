@@ -45,22 +45,22 @@ def main(args):
     if args.emotion:
         args.data = os.path.join(
             args.data_dir_path,
-            # args.dataset,
+            args.dataset,
             "data_" + args.dataset + "_" + args.emotion + ".pkl",
         )
     else:
         if args.transformers:
             args.data = os.path.join(
                 args.data_dir_path,
-                # args.dataset,
+                args.dataset,
                 "transformers",
                 "data_" + args.dataset + ".pkl",
             )
             print(os.path.join(args.data_dir_path, args.dataset, "transformers"))
         else:
             args.data = os.path.join(
-                # args.data_dir_path, args.dataset, "data_" + args.dataset + ".pkl"
-                args.data_dir_path, "data_" + args.dataset + ".pkl"
+                args.data_dir_path, args.dataset, "data_" + args.dataset + ".pkl"
+                # args.data_dir_path, "data_" + args.dataset + ".pkl"
             )
 
     # load data
